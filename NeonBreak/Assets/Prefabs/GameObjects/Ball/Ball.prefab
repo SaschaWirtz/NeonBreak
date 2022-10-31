@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8635624913376264221}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f5a29c8bd186deb4baaadf09f6dbdd07, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -76,8 +76,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.85947704, g: 0, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 7481ffc7666f05c41885eed3b8bfe3f5, type: 3}
+  m_Color: {r: 1, g: 0, b: 0.9882355, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -117,13 +117,13 @@ CircleCollider2D:
   m_GameObject: {fileID: 8635624913376264218}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 8dc5f3b0851787241830d01d0742053b, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.47
 --- !u!114 &8635624913376264221
 MonoBehaviour:
   m_ObjectHideFlags: 0
