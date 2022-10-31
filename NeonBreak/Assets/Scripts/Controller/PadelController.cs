@@ -6,8 +6,8 @@ public class PadelController : MonoBehaviour
 {
     private Vector2 newPosition;
     private Rigidbody2D rb;
-    public float speed = 100f;
-    public float movementTolerance = 0.2f;
+    public float speed = 10f;
+    public float movementTolerance = 0.1f;
 
     void Awake() {
         this.newPosition = this.transform.position;

@@ -25,7 +25,7 @@ public class BallController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        this.rigidBody.velocity = Vector2.ClampMagnitude(this.rigidBody.velocity, this.speed);
+        this.rigidBody.velocity = this.rigidBody.velocity.normalized * this.speed;
     }
 
     void OnDestroy() {
