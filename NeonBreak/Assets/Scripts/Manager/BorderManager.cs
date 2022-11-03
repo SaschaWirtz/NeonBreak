@@ -8,19 +8,19 @@ public class BorderManager : MonoBehaviour
     public GameObject lowerEdgePrefab;
 
     void Awake() {
-        this.createBorderCollider();
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject);
+        this.createBorderCollider();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Destroy(gameObject);
     }
 
     // Create the screen borders once for this level
@@ -30,11 +30,16 @@ public class BorderManager : MonoBehaviour
         Vector2 leftDownCorner = ViewportHelper.LeftDownCorner;
         Vector2[] collisionPoints;
  
+        RectTransform canvas = FindObjectOfType<Canvas>().GetComponent<RectTransform>();
+        RectTransform scoreContainer = ScoreManager.GetInstance().GetComponent<RectTransform>();
+        float scoreHeight = scoreContainer.rect.height / canvas.rect.height;
+        scoreHeight = ViewportHelper.GetViewportHeight() * scoreHeight;
+
         EdgeCollider2D upperEdge = new GameObject("upperEdge").AddComponent<EdgeCollider2D>();
         upperEdge.tag = "Borders";
         collisionPoints = upperEdge.points;
-        collisionPoints[0] = new Vector2(leftDownCorner.x, rightUpperCorner.y);
-        collisionPoints[1] = new Vector2(rightUpperCorner.x, rightUpperCorner.y);
+        collisionPoints[0] = new Vector2(leftDownCorner.x, rightUpperCorner.y - scoreHeight);
+        collisionPoints[1] = new Vector2(rightUpperCorner.x, rightUpperCorner.y - scoreHeight);
         upperEdge.points = collisionPoints;
  
         EdgeCollider2D lowerEdge = Instantiate(this.lowerEdgePrefab).GetComponent<EdgeCollider2D>();

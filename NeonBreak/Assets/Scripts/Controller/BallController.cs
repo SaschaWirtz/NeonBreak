@@ -41,6 +41,9 @@ public class BallController : MonoBehaviour
     }
 
     private void Respawn(bool isInit = false, int respawnDelay = 1) {
+        if(!isInit) {
+            ScoreManager.GetInstance().LoseLife();
+        }
         this.transform.position = isInit ? this.initPosition : this.respawnPosition;
         this.rigidBody.velocity = Vector2.zero * this.speed;
         this.StartCoroutine(this.SetVelocity(respawnDelay));
