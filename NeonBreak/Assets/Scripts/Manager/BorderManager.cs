@@ -20,14 +20,14 @@ public class BorderManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     // Create the screen borders once for this level
     private void createBorderCollider()
     {
-        Vector2 rightUpperCorner = Camera.main.ViewportToWorldPoint(new Vector3(1f, 1f, Camera.main.nearClipPlane));
-        Vector2 leftDownCorner = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0f, Camera.main.nearClipPlane));
+        Vector2 rightUpperCorner = ViewportHelper.RightUpperCorner;
+        Vector2 leftDownCorner = ViewportHelper.LeftDownCorner;
         Vector2[] collisionPoints;
  
         EdgeCollider2D upperEdge = new GameObject("upperEdge").AddComponent<EdgeCollider2D>();
