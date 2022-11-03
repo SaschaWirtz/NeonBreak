@@ -12,7 +12,6 @@ public class BallController : MonoBehaviour
 
     void Awake() {
         this.rigidBody = GetComponent<Rigidbody2D>();
-        
     }
 
     // Start is called before the first frame update
@@ -36,7 +35,7 @@ public class BallController : MonoBehaviour
         
     }
 
-    // Please don't laugh, this is a compiler error fix
+    // Please don't laugh, this is a compiler error fix. xD
     private void RespawnTrigger() {
         this.Respawn();
     }

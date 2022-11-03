@@ -24,6 +24,8 @@ public class LowerEdgeController : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider) {
         if(collider.gameObject.name == "Ball") {
             this.respawn();
+        } else if (collider.gameObject.tag == "Powerups") {
+            collider.gameObject.GetComponent<PowerupController>().destroyPowerup();
         }
     }
 }

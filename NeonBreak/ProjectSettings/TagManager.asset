@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Borders
+  - Bricks
+  - Balls
+  - Powerups
   layers:
   - Default
   - TransparentFX
