@@ -264,63 +264,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cdc7e07d946f1551a5547f92943f09a, type: 3}
---- !u!1001 &4794973533802636882
+--- !u!1001 &2421269076260168009
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4794973534403904472, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
-      propertyPath: m_Name
-      value: EnlargePadelBrick
-      objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.67
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.85
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.04930946
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4794973534403904478, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+    - target: {fileID: 2421269075975096164, guid: 970753e995868fc488ad824bd4b61184, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2421269075975096165, guid: 970753e995868fc488ad824bd4b61184, type: 3}
+      propertyPath: m_Name
+      value: BrickFactory
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 970753e995868fc488ad824bd4b61184, type: 3}
 --- !u!1001 &7652711839256193313
 PrefabInstance:
   m_ObjectHideFlags: 0

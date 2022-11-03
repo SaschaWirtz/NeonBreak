@@ -16,7 +16,6 @@ public static class ViewportHelper
                 _rightUpperCorner = Camera.main.ViewportToWorldPoint(new Vector3(1f, 1f, Camera.main.nearClipPlane));
                 _rightUpperCornerInit = true;
             }
-            Debug.Log(_rightUpperCorner);
             return _rightUpperCorner;
         }
         private set{}
@@ -28,7 +27,6 @@ public static class ViewportHelper
                 _leftDownCorner = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0f, Camera.main.nearClipPlane));
                 _leftDownCornerInit = true;
             }
-            Debug.Log(_leftDownCorner);
             return _leftDownCorner;
         }
         private set{}

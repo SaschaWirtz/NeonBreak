@@ -26,7 +26,6 @@ public class PowerupFactory : MonoBehaviour {
 
         if (toInstantiate != null) {
             GameObject newObject = Instantiate(toInstantiate);
-            GameObject newObject2 = Instantiate(toInstantiate);
             toInstantiate = null;
             newObject.transform.position = position;
         }
