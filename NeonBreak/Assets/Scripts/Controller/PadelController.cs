@@ -6,6 +6,7 @@ public class PadelController : MonoBehaviour
 {
     private Vector2 newPosition;
     private Rigidbody2D rb;
+    private IEnumerator enlargePadelCoroutine;
     public float speed = 10f;
     public float movementTolerance = 0.1f;
 
@@ -42,5 +43,23 @@ public class PadelController : MonoBehaviour
         }
 
         this.rb.velocity = moveDirection * this.speed;
+    }
+
+    void OnTriggerEnter2D(Collider2D collider) {
+        if(collider.gameObject.tag == "EnlargePadel") {
+            collider.gameObject.GetComponent<PowerupController>().DestroyPowerup();
+            if(this.enlargePadelCoroutine != null) {
+                this.StopCoroutine(this.enlargePadelCoroutine);
+            }
+            this.enlargePadelCoroutine = this.enlargePadel();
+            this.StartCoroutine(this.enlargePadelCoroutine);
+        }
+    }
+
+    private IEnumerator enlargePadel() {
+        this.transform.localScale = new Vector3(0.7f, 0.5f, 1f);
+        yield return new WaitForSeconds(20);
+        this.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+        this.enlargePadelCoroutine = null;
     }
 }

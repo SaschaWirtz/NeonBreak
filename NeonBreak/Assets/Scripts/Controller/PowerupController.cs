@@ -23,7 +23,7 @@ public class PowerupController : MonoBehaviour
         this.rigidBody.velocity = this.rigidBody.velocity.normalized * this.speed;
     }
     
-    public void destroyPowerup() {
+    public void DestroyPowerup() {
         Destroy(this.gameObject);
     }
 }

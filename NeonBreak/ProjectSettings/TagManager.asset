@@ -7,7 +7,7 @@ TagManager:
   - Borders
   - Bricks
   - Balls
-  - Powerups
+  - EnlargePadel
   layers:
   - Default
   - TransparentFX
