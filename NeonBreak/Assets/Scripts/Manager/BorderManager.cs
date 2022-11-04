@@ -8,19 +8,19 @@ public class BorderManager : MonoBehaviour
     public GameObject lowerEdgePrefab;
 
     void Awake() {
-        
+        this.createBorderCollider();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        this.createBorderCollider();
+        Destroy(gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Destroy(gameObject);
+        
     }
 
     // Create the screen borders once for this level
