@@ -18,13 +18,17 @@ public class BrickController : MonoBehaviour
         
     }
 
+    void OnDestroy() {
+        ScoreManager.GetInstance().AddScore(10);
+    }
+
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Balls") {
             if (this.type != BrickType.Default) {
                 PowerupFactory.Instance.spawnPowerup(this.type, this.transform.position * 1);
             }
-            ScoreManager.GetInstance().AddScore(10);
+            
             Destroy(this.gameObject);
-        } 
+        }
     }
 }
