@@ -9,6 +9,9 @@ public class BallController : MonoBehaviour
     public Vector2 respawnPosition = new Vector2(0f, 0f);
     private Rigidbody2D rigidBody;
     private readonly Vector2 initPosition = new Vector2(0f, -3.4f);
+    private Vector2 firstVelocity = new Vector2(0f, 0f);
+    private Vector2 secondVelocity = new Vector2(0f, 0f);
+    private int unstuckMethod = 0;
 
     void Awake() {
         this.rigidBody = GetComponent<Rigidbody2D>();
@@ -25,6 +28,7 @@ public class BallController : MonoBehaviour
     void FixedUpdate()
     {
         this.rigidBody.velocity = this.rigidBody.velocity.normalized * this.speed;
+        this.checkForRepeatingMovements();
     }
 
     void OnDestroy() {
@@ -47,6 +51,28 @@ public class BallController : MonoBehaviour
         this.transform.position = isInit ? this.initPosition : this.respawnPosition;
         this.rigidBody.velocity = Vector2.zero * this.speed;
         this.StartCoroutine(this.SetVelocity(respawnDelay));
+    }
+
+    private void checkForRepeatingMovements() {
+        if(this.rigidBody.velocity == Vector2.zero) {
+            return;
+        }else if(this.rigidBody.velocity == this.firstVelocity) {
+            return;
+        }else if(this.rigidBody.velocity != this.secondVelocity) {
+            this.secondVelocity = this.firstVelocity;
+            this.firstVelocity = this.rigidBody.velocity;
+            return;
+        }
+        if(this.unstuckMethod == 0) {
+            this.rigidBody.velocity += new Vector2(-0.5f, 0.5f);
+            this.unstuckMethod += 1;
+        }else {
+            this.rigidBody.velocity += new Vector2(0.5f, -0.5f);
+            this.unstuckMethod -= 1;
+        }
+        this.rigidBody.velocity = this.rigidBody.velocity.normalized * this.speed;
+        this.secondVelocity = this.firstVelocity;
+        this.firstVelocity = this.rigidBody.velocity;
     }
 
     private IEnumerator SetVelocity(int respawnDelay) {
