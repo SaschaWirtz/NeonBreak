@@ -23,7 +23,7 @@ public class BrickController : MonoBehaviour
             if (this.type != BrickType.Default) {
                 PowerupFactory.Instance.spawnPowerup(this.type, this.transform.position * 1);
             }
-
+            ScoreManager.GetInstance().AddScore(10);
             Destroy(this.gameObject);
         } 
     }

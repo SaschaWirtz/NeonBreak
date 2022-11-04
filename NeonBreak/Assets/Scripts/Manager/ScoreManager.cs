@@ -11,6 +11,7 @@ public class ScoreManager : MonoBehaviour {
     public TextMeshProUGUI lifesText;
 
     private int lifes = 3;
+    private int score = 0;
 
     public static ScoreManager GetInstance() {
         return Instance;
@@ -31,5 +32,10 @@ public class ScoreManager : MonoBehaviour {
     public void AddLifes(int addedLifes = 1) {
         this.lifes += addedLifes;
         this.lifesText.text = lifes.ToString();
+    }
+
+    public void AddScore(int scoreToAdd) {
+        this.score += scoreToAdd;
+        this.scoreText.text = score.ToString().PadLeft(6, '0');
     }
 }

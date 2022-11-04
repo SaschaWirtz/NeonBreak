@@ -47,6 +47,7 @@ public class PadelController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider) {
         if(collider.gameObject.tag == "EnlargePadel") {
+            ScoreManager.GetInstance().AddScore(50);
             collider.gameObject.GetComponent<PowerupController>().DestroyPowerup();
             if(this.enlargePadelCoroutine != null) {
                 this.StopCoroutine(this.enlargePadelCoroutine);
