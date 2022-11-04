@@ -6,6 +6,7 @@ public class BorderManager : MonoBehaviour
 {
 
     public GameObject lowerEdgePrefab;
+    public Canvas rootCanvas;
 
     void Awake() {
         this.createBorderCollider();
@@ -30,7 +31,7 @@ public class BorderManager : MonoBehaviour
         Vector2 leftDownCorner = ViewportHelper.LeftDownCorner;
         Vector2[] collisionPoints;
  
-        RectTransform canvas = FindObjectOfType<Canvas>().GetComponent<RectTransform>();
+        RectTransform canvas = this.rootCanvas.GetComponent<RectTransform>();
         RectTransform scoreContainer = ScoreManager.GetInstance().GetComponent<RectTransform>();
         float scoreHeight = scoreContainer.rect.height / canvas.rect.height;
         scoreHeight = ViewportHelper.GetViewportHeight() * scoreHeight;
