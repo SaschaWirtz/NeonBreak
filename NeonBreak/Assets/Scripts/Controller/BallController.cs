@@ -4,33 +4,69 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-
+    /// <summary> 
+    /// The constant speed of the ball.
+    /// </summary>
     public float speed = 5f;
+
+    /// <summary> 
+    /// Spawn position of ball every time it respawns.
+    /// </summary>
     public Vector2 respawnPosition = new Vector2(0f, 0f);
+
+    /// <summary> 
+    /// Rigidbody of ball.
+    /// </summary>
     private Rigidbody2D rigidBody;
+    
+    /// <summary> 
+    /// Spawn position of initial spawn.
+    /// </summary>
     private readonly Vector2 initPosition = new Vector2(0f, -3.4f);
+
+    /// <summary> 
+    /// Saves current velocity for anti softlock.
+    /// </summary>
     private Vector2 firstVelocity = new Vector2(0f, 0f);
+
+    /// <summary> 
+    /// Saves past velocity for anti softlock.
+    /// </summary>
     private Vector2 secondVelocity = new Vector2(0f, 0f);
+
+    /// <summary> 
+    /// Determines anti softlock method.
+    /// </summary>
     private int unstuckMethod = 0;
 
+    /// <summary> 
+    /// Getting reference for rigid body.
+    /// </summary>
     void Awake() {
         this.rigidBody = GetComponent<Rigidbody2D>();
     }
 
-    // Start is called before the first frame update
+    /// <summary> 
+    /// Triggers initial respawn and adding delegate function for later respawns.
+    /// </summary>
     void Start()
     {
         this.Respawn(true);
         GameObject.Find("lowerEdge").GetComponent<LowerEdgeController>().respawn += this.RespawnTrigger;
     }
 
-    // Update is called once per frame
+    /// <summary> 
+    /// Normalize ball speed and trigger softlock check.
+    /// </summary>
     void FixedUpdate()
     {
         this.rigidBody.velocity = this.rigidBody.velocity.normalized * this.speed;
         this.checkForRepeatingMovements();
     }
 
+    /// <summary> 
+    /// Remove delegate function to prevent nullpointer exception.
+    /// </summary>
     void OnDestroy() {
         LowerEdgeController lowerEdge = GameObject.Find("lowerEdge").GetComponent<LowerEdgeController>();
         if(lowerEdge != null) {
@@ -39,11 +75,22 @@ public class BallController : MonoBehaviour
         
     }
 
-    // Please don't laugh, this is a compiler error fix. xD
+    /// <summary> 
+    /// Please don't laugh, this is a compiler error fix. xD
+    /// </summary>
     private void RespawnTrigger() {
         this.Respawn();
     }
 
+    /// <summary> 
+    /// Triggers respawn logic after life was lost.
+    /// </summary>
+    /// <param name="isInit">
+    /// Determines if initial spawn or respawn.
+    /// </param>
+    /// <param name="respawnDelay">
+    /// Determines the time between the ball appearing and starts moving.
+    /// </param>
     private void Respawn(bool isInit = false, int respawnDelay = 1) {
         if(!isInit) {
             ScoreManager.GetInstance().LoseLife();
@@ -53,7 +100,12 @@ public class BallController : MonoBehaviour
         this.StartCoroutine(this.SetVelocity(respawnDelay));
     }
 
+    /// <summary> 
+    /// Method to unstuck the ball if it gets softlocked.
+    /// </summary>
     private void checkForRepeatingMovements() {
+
+        // Catches cases in which no adjustment is needed
         if(this.rigidBody.velocity == Vector2.zero) {
             return;
         }else if(this.rigidBody.velocity == this.firstVelocity) {
@@ -63,6 +115,8 @@ public class BallController : MonoBehaviour
             this.firstVelocity = this.rigidBody.velocity;
             return;
         }
+
+        // Unstuckes ball with change of velocity vector
         if(this.unstuckMethod == 0) {
             this.rigidBody.velocity += new Vector2(-0.5f, 0.5f);
             this.unstuckMethod += 1;
@@ -75,6 +129,9 @@ public class BallController : MonoBehaviour
         this.firstVelocity = this.rigidBody.velocity;
     }
 
+    /// <summary> 
+    /// Coroutine for spawn delay.
+    /// </summary>
     private IEnumerator SetVelocity(int respawnDelay) {
         yield return new WaitForSeconds(respawnDelay);
         this.rigidBody.velocity = RandomHelper.GetRandomDownwardUnitVector(-0.7f, 0.7f) * this.speed;

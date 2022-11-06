@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class BrickController : MonoBehaviour
 {
+    /// <summary> 
+    /// Set brick type.
+    /// </summary>
     public BrickType type = BrickType.Default;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary> 
+    /// Triggers score logic.
+    /// </summary>
     void OnDestroy() {
         ScoreManager.GetInstance().AddScore(10);
     }
 
+    /// <summary> 
+    /// Destroys brick on impact and triggers powerup method.
+    /// </summary>
+    /// <param name="collision"> 
+    /// Colliding collision information.
+    /// </param>
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Balls") {
             if (this.type != BrickType.Default) {

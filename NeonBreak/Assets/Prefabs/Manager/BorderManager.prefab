@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lowerEdgePrefab: {fileID: 4647561809771137171, guid: 7c5ad29d86b229c46a8ebd68dacf179d, type: 3}
+  rootCanvas: {fileID: 0}

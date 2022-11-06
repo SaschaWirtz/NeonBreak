@@ -5,32 +5,41 @@ using UnityEngine;
 public class BorderManager : MonoBehaviour
 {
 
+    /// <summary> 
+    /// Prefab of lower edge.
+    /// </summary>
     public GameObject lowerEdgePrefab;
+
+    /// <summary> 
+    /// Root canvas to be used for ui determination.
+    /// </summary>
     public Canvas rootCanvas;
 
+    /// <summary> 
+    /// Create border colliders. Script execution order ensured by unity project settings.
+    /// </summary>
     void Awake() {
         this.createBorderCollider();
     }
 
-    // Start is called before the first frame update
+    /// <summary> 
+    /// Removing border manager from sceentree.
+    /// </summary>
     void Start()
     {
         Destroy(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    // Create the screen borders once for this level
+    /// <summary> 
+    /// Create the screen borders once for this level.
+    /// </summary>
     private void createBorderCollider()
     {
         Vector2 rightUpperCorner = ViewportHelper.RightUpperCorner;
         Vector2 leftDownCorner = ViewportHelper.LeftDownCorner;
         Vector2[] collisionPoints;
  
+        // Calculating offset of score border because ui
         RectTransform canvas = this.rootCanvas.GetComponent<RectTransform>();
         RectTransform scoreContainer = ScoreManager.GetInstance().GetComponent<RectTransform>();
         float scoreHeight = scoreContainer.rect.height / canvas.rect.height;

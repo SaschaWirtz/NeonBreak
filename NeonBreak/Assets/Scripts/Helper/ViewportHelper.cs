@@ -5,11 +5,30 @@ using UnityEngine;
 
 public static class ViewportHelper
 {
+    /// <summary> 
+    /// Helper valiable checking if right upper corner was already determined.
+    /// </summary>
     private static bool _rightUpperCornerInit = false;
+
+    /// <summary> 
+    /// Helper valiable checking if left lower corner was already determined.
+    /// </summary>
     private static bool _leftDownCornerInit = false;
+
+    /// <summary> 
+    /// Private field with vector of right upper corner.
+    /// </summary>
     private static Vector2 _rightUpperCorner;
+
+    /// <summary> 
+    /// Private field with vector of left lower corner.
+    /// </summary>
     private static Vector2 _leftDownCorner;
 
+
+    /// <summary> 
+    /// Public property returning the vector of right upper corner.
+    /// </summary>
     public static Vector2 RightUpperCorner{
         get{
             if(!_rightUpperCornerInit) {
@@ -21,6 +40,9 @@ public static class ViewportHelper
         private set{}
     }
     
+    /// <summary> 
+    /// Public property returning the vector of left lower corner.
+    /// </summary>
     public static Vector2 LeftDownCorner{
         get{
             if(!_leftDownCornerInit) {
@@ -32,10 +54,22 @@ public static class ViewportHelper
         private set{}
     }
     
+    /// <summary> 
+    /// Get viewport width.
+    /// </summary>
+    /// <returns> 
+    /// Viewport width.
+    /// </returns>
     public static float GetViewportWidth() {
         return RightUpperCorner.x - LeftDownCorner.x;
     }
 
+    /// <summary> 
+    /// Get viewport height.
+    /// </summary>
+    /// <returns> 
+    /// Viewport height.
+    /// </returns>
     public static float GetViewportHeight() {
         return RightUpperCorner.y - LeftDownCorner.y;
     }
