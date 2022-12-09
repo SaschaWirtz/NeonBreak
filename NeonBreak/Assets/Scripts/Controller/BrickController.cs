@@ -24,11 +24,13 @@ public class BrickController : MonoBehaviour
     /// </param>
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Balls") {
+            this.GetComponent<AudioSource>().Play();
+
             if (this.type != BrickType.Default) {
                 PowerupFactory.Instance.spawnPowerup(this.type, this.transform.position * 1);
             }
             
-            Destroy(this.gameObject);
+            Destroy(this.gameObject, 0.1f);
         }
     }
 }

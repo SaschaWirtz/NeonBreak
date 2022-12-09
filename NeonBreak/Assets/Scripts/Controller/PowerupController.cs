@@ -41,6 +41,9 @@ public class PowerupController : MonoBehaviour
     /// Destroy Powerup.
     /// </summary>
     public void DestroyPowerup() {
-        Destroy(this.gameObject);
+        this.GetComponent<AudioSource>().Play();
+
+        Destroy(this.GetComponent<Collider2D>());
+        Destroy(this.gameObject, 0.8f);
     }
 }
