@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Android;
+using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -13,13 +14,20 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        StartCoroutine(enableButtons());
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    IEnumerator enableButtons() {
+        yield return new WaitForSeconds(9.0f);
+        singleplayerButton.GetComponent<Button>().interactable = true;
+        multiplayerButton.GetComponent<Button>().interactable = true;
+        exitButton.GetComponent<Button>().interactable = true;
     }
 
     public void singleplayerMode() {
