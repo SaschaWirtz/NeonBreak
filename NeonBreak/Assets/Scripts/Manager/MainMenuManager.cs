@@ -20,7 +20,16 @@ public class MainMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        using (AndroidJavaClass btDiscoveryAgent = new AndroidJavaClass("de.MGD.NeonBreak.transports.bluetoothTransport.BTDiscoveryAgent")) {
+            AndroidJavaObject companion = btDiscoveryAgent.GetStatic<AndroidJavaObject>("Companion");
+            Debug.Log("Name: " + companion.Call<int>("getSize"));
+            for (int i = 0; i < companion.Call<int>("getSize"); i++)
+            {
+                Debug.Log("Name: " + companion.Call<string>("getNameById", i));
+                Debug.Log("MAC: " + companion.Call<string>("getMacById", i));
+            }
+        }
+
     }
 
     IEnumerator enableButtons() {
@@ -72,7 +81,8 @@ public class MainMenuManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         exitButton.SetActive(false);
         yield return new WaitForSeconds(0.1f);
-        Application.Quit();
+        // Application.Quit();
+        this.startHost();
     }
 
     private bool activateBluetooth() {
@@ -98,7 +108,7 @@ public class MainMenuManager : MonoBehaviour
                         callbacks.PermissionGranted += (string permissionName) => {
                             if (permissionName == "android.permission.BLUETOOTH_CONNECT") {
                                 if (this.activateBluetooth()) {
-                                    //Multiplayer
+                                    this.discoverDevices();
                                 } else {
                                     //Error
                                 }
@@ -108,10 +118,34 @@ public class MainMenuManager : MonoBehaviour
                         Permission.RequestUserPermission("android.permission.BLUETOOTH_CONNECT", callbacks);
                     } else {
                         if (this.activateBluetooth()) {
-                            //Multiplayer
+                            this.discoverDevices();
                         } else {
                             //Error
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private void discoverDevices() {
+        using (AndroidJavaObject btDiscoveryAgent = new AndroidJavaObject("de.MGD.NeonBreak.transports.bluetoothTransport.BTDiscoveryAgent")) {
+            using (AndroidJavaClass javaUnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
+                using (AndroidJavaObject currentActivity = javaUnityPlayer.GetStatic<AndroidJavaObject>("currentActivity")) {
+                    btDiscoveryAgent.Call("registerReceiver", currentActivity);
+                    btDiscoveryAgent.Call("startDiscovery");
+                }
+            }
+        }
+    }
+
+    private void startHost() {
+        using (AndroidJavaClass javaUnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
+            using (AndroidJavaObject currentActivity = javaUnityPlayer.GetStatic<AndroidJavaObject>("currentActivity")) {
+                using (AndroidJavaObject btServerController = new AndroidJavaObject("de.MGD.NeonBreak.transports.bluetoothTransport.BTServerController", currentActivity)) {
+                    btServerController.Call("start");
+                    using (AndroidJavaObject btDiscoverStateManager = new AndroidJavaObject("de.MGD.NeonBreak.transports.bluetoothTransport.BTDiscoverStateManager")) {
+                        btDiscoverStateManager.Call("makeDiscoverable", currentActivity);
                     }
                 }
             }
