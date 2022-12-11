@@ -84,30 +84,36 @@ public class MainMenuManager : MonoBehaviour
     }
 
     private void prepareAndStartMultiplayer() {
-        if (!Permission.HasUserAuthorizedPermission("android.permission.BLUETOOTH_CONNECT")) {
-            var callbacks = new PermissionCallbacks();
-            callbacks.PermissionDenied += (string permissionName) => {
-                if (permissionName == "android.permission.BLUETOOTH_CONNECT") {
-                    //Error
-                }
-            };
+        using (AndroidJavaObject btPermissionManager = new AndroidJavaObject("de.MGD.NeonBreak.transports.bluetoothTransport.BTPermissionManager")) {
+            using (AndroidJavaClass javaUnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
+                using (AndroidJavaObject currentActivity = javaUnityPlayer.GetStatic<AndroidJavaObject>("currentActivity")) {
+                    if (btPermissionManager.Call<bool>("IsPermissionRequired", currentActivity) && !Permission.HasUserAuthorizedPermission("android.permission.BLUETOOTH_CONNECT")) {
+                        var callbacks = new PermissionCallbacks();
+                        callbacks.PermissionDenied += (string permissionName) => {
+                            if (permissionName == "android.permission.BLUETOOTH_CONNECT") {
+                                //Error
+                            }
+                        };
 
-            callbacks.PermissionGranted += (string permissionName) => {
-                if (permissionName == "android.permission.BLUETOOTH_CONNECT") {
-                    if (this.activateBluetooth()) {
-                        //Multiplayer
+                        callbacks.PermissionGranted += (string permissionName) => {
+                            if (permissionName == "android.permission.BLUETOOTH_CONNECT") {
+                                if (this.activateBluetooth()) {
+                                    //Multiplayer
+                                } else {
+                                    //Error
+                                }
+                            }
+                        };
+
+                        Permission.RequestUserPermission("android.permission.BLUETOOTH_CONNECT", callbacks);
                     } else {
-                        //Error
+                        if (this.activateBluetooth()) {
+                            //Multiplayer
+                        } else {
+                            //Error
+                        }
                     }
                 }
-            };
-
-            Permission.RequestUserPermission("android.permission.BLUETOOTH_CONNECT", callbacks);
-        } else {
-            if (this.activateBluetooth()) {
-                //Multiplayer
-            } else {
-                //Error
             }
         }
     }

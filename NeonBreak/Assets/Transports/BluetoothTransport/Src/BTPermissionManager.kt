@@ -27,4 +27,14 @@ public class BTPermissionManager {
             }
         }
     }
+
+    public fun IsPermissionRequired(activity: AppCompatActivity): Boolean {
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.BLUETOOTH_CONNECT), 2);
+                return true;
+            }
+        }
+        return false;
+    }
 }
