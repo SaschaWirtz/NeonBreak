@@ -16,6 +16,11 @@ public class PowerupFactory : MonoBehaviour {
     public GameObject EnlargePadel;
 
     /// <summary> 
+    /// Object powerup pool.
+    /// </summary>
+    private List<GameObject> powerupPool;
+
+    /// <summary> 
     /// Getter for static gameobject instance.
     /// </summary>
     /// <returns> 
@@ -38,6 +43,46 @@ public class PowerupFactory : MonoBehaviour {
     }
 
     /// <summary> 
+    /// Initialize powerup object pool.
+    /// </summary>
+    private void Start() {
+        this.powerupPool = new List<GameObject>();
+    }
+
+    /// <summary> 
+    /// Returns a unused powerup gameobject from objectpool.
+    /// </summary>
+    /// <param name="type"> 
+    /// Powerup type determined by brick type.
+    /// </param>
+    /// <returns> 
+    /// Unused powerup gameobject from objectpool.
+    /// </returns>
+    private GameObject GetActivePooledPowerup(BrickType type) {        
+
+        // Iterate through objectpool and search for unused powerup gameobject.
+        for(int pooledPowerup = 0; pooledPowerup < this.powerupPool.Count; pooledPowerup++) {
+            if(!this.powerupPool[pooledPowerup].activeInHierarchy && this.powerupPool[pooledPowerup].tag == Enum.GetName(typeof(BrickType), type)) {
+                this.powerupPool[pooledPowerup].SetActive(true);
+                return this.powerupPool[pooledPowerup];
+            }
+        }
+
+        // Get correct prefab reference by reflection with bricktype name
+        GameObject toInstantiate = this.GetType().GetField(Enum.GetName(typeof(BrickType), type)).GetValue(this) as GameObject;
+
+        if (toInstantiate != null) {
+
+            // Create new powerup gameobject if no unused is available.
+            GameObject newPowerup = Instantiate(toInstantiate);
+            this.powerupPool.Add(newPowerup);
+            return newPowerup;
+        }
+
+        return null;
+    }
+
+    /// <summary> 
     /// Method for placing powerups in gameview.
     /// </summary>
     /// <param name="type"> 
@@ -48,12 +93,8 @@ public class PowerupFactory : MonoBehaviour {
     /// </param>
     public void spawnPowerup(BrickType type, Vector3 position) {
 
-        // Get correct prefab reference by reflection with bricktype name
-        GameObject toInstantiate = this.GetType().GetField(Enum.GetName(typeof(BrickType), type)).GetValue(this) as GameObject;
-
-        if (toInstantiate != null) {
-            GameObject newObject = Instantiate(toInstantiate);
-            toInstantiate = null;
+        GameObject newObject = this.GetActivePooledPowerup(type);
+        if(newObject != null) {
             newObject.transform.position = position;
         }
     }

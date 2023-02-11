@@ -43,7 +43,16 @@ public class PowerupController : MonoBehaviour
     public void DestroyPowerup() {
         this.GetComponent<AudioSource>().Play();
 
-        Destroy(this.GetComponent<Collider2D>());
-        Destroy(this.gameObject, 0.8f);
+        this.GetComponent<Collider2D>().enabled = false;
+        StartCoroutine(disablePowerup());
+    }
+
+    /// <summary> 
+    /// Coroutine for powerup destroy delay.
+    /// </summary>
+    IEnumerator disablePowerup() {
+        yield return new WaitForSeconds(0.8f);
+        this.GetComponent<Collider2D>().enabled = true;
+        this.gameObject.SetActive(false);
     }
 }
