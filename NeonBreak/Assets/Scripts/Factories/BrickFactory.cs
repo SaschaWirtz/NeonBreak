@@ -24,22 +24,22 @@ public class BrickFactory : MonoBehaviour {
     /// <summary> 
     /// Number of columns in brick cluster
     /// </summary>
-    private readonly int COL = 4;
+    private readonly int COL = 5;
 
     /// <summary> 
     /// Number of rows in brick cluster
     /// </summary>
-    private readonly int ROW = 4;
+    private readonly int ROW = 5;
 
     /// <summary> 
     /// Start position of columns in brick cluster
     /// </summary>
-    private readonly float COLSTART = -1.5f;
+    private readonly float COLSTART = -2f;
 
     /// <summary> 
     /// Start position of rows in brick cluster
     /// </summary>
-    private readonly float ROWSTART = 0f;
+    private readonly float ROWSTART = -0.5f;
 
     /// <summary> 
     /// Steps inbetween bricks in column
@@ -57,6 +57,17 @@ public class BrickFactory : MonoBehaviour {
     private List<GameObject> brickPool;
 
     /// <summary> 
+    /// List of available brick pattern.
+    /// </summary>
+    private List<List<bool>> spawnPattern = new List<List<bool>>{
+        new List<bool>{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+        new List<bool>{false, false, true, false, false, false, true, true, true, false, true, true, true, true, true, false, true, true, true, false, false, false, true, false, false},
+        new List<bool>{false, false, true, false, false, false, false, true, false, false, true, true, true, true, true, false, false, true, false, false, false, false, true, false, false},
+        new List<bool>{true, false, false, false, false, true, true, false, false, false, true, true, true, false, false, true, true, true, true, false, true, true, true, true, true},
+        new List<bool>{false, false, false, false, true, false, false, false, true, true, false, false, true, true, true, false, true, true, true, true, true, true, true, true, true}
+    };
+
+    /// <summary> 
     /// Getter for static gameobject instance.
     /// </summary>
     /// <returns> 
@@ -67,7 +78,7 @@ public class BrickFactory : MonoBehaviour {
     }
 
     /// <summary> 
-    /// Initialize factory by making static and generating bricks.
+    /// Initialize factory by making static.
     /// </summary>
     private void Awake() {
         if(Instance == null)
@@ -78,7 +89,12 @@ public class BrickFactory : MonoBehaviour {
 
             SceneManager.sceneLoaded += this.OnSceneLoaded;
         }
+    }
 
+    /// <summary> 
+    /// Generating bricks.
+    /// </summary>
+    private void Start() {
         this.brickPool = new List<GameObject>();
         this.generateBricks();
     }
@@ -102,20 +118,26 @@ public class BrickFactory : MonoBehaviour {
     /// Generating and placing bricks in gameview.
     /// </summary>
     public void generateBricks() {
+        Debug.Log("In generate method");
+        int brickPattern = UnityEngine.Random.Range(0, this.spawnPattern.Count);
+        int brickPosition = 0;
         for(int column = 0; column < this.COL; column++) {
             float yPos = this.ROWSTART + (column * this.ROWSTEPS);
             for(int row = 0; row < this.ROW; row++) {
-                float xPos = this.COLSTART + (row * this.COLSTEPS);
-                GameObject brickObject;
-                int powerupRandomInt = new System.Random().Next(1, 5);
-                if(powerupRandomInt < 2) {
-                    brickObject = this.GetActivePooledPowerup(BrickType.EnlargePadel);
-                }else {
-                    brickObject = this.GetActivePooledPowerup(BrickType.Default);
+                if(this.spawnPattern[brickPattern][brickPosition]) {
+                    float xPos = this.COLSTART + (row * this.COLSTEPS);
+                    GameObject brickObject;
+                    int powerupRandomInt = new System.Random().Next(1, 5);
+                    if(powerupRandomInt < 2) {
+                        brickObject = this.GetActivePooledPowerup(BrickType.EnlargePadel);
+                    }else {
+                        brickObject = this.GetActivePooledPowerup(BrickType.Default);
+                    }
+                    if(brickObject != null) {
+                        brickObject.transform.position = new Vector3(xPos, yPos);
+                    }
                 }
-                if(brickObject != null) {
-                    brickObject.transform.position = new Vector3(xPos, yPos);
-                }
+                brickPosition++;
             }
         }
     }
@@ -134,6 +156,8 @@ public class BrickFactory : MonoBehaviour {
         // Iterate through objectpool and search for unused brick gameobject.
         for(int pooledBrick = 0; pooledBrick < this.brickPool.Count; pooledBrick++) {
             if(!this.brickPool[pooledBrick].activeInHierarchy && this.brickPool[pooledBrick].GetComponent<BrickController>().type == type) {
+                Debug.Log("Got old.");
+                this.brickPool[pooledBrick].SetActive(true);
                 return this.brickPool[pooledBrick];
             }
         }

@@ -111,7 +111,7 @@ public class BallController : MonoBehaviour
     /// <param name="respawnDelay">
     /// Determines the time between the ball appearing and starts moving.
     /// </param>
-    private void Respawn(bool isInit = false, int respawnDelay = 1) {
+    public void Respawn(bool isInit = false, int respawnDelay = 1) {
         if(!isInit) {
             ScoreManager.GetInstance().LoseLife();
         }

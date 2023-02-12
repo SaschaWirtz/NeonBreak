@@ -1729,6 +1729,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ball
       objectReference: {fileID: 0}
+    - target: {fileID: 8635624913376264221, guid: 338fb04a7e767b941a7dfd94037ebfa3, type: 3}
+      propertyPath: respawnPosition.y
+      value: -3.4
+      objectReference: {fileID: 0}
     - target: {fileID: 8635624913376264222, guid: 338fb04a7e767b941a7dfd94037ebfa3, type: 3}
       propertyPath: m_RootOrder
       value: 1

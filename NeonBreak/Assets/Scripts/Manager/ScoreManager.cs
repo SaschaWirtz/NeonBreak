@@ -91,8 +91,8 @@ public class ScoreManager : MonoBehaviour {
         this.scoreText.text = score.ToString().PadLeft(6, '0');
 
         if(GameObject.FindGameObjectsWithTag("Bricks").Length == 0) {
-            this.finalText.text = "You Won";
-            this.gameOver();
+            GameObject.FindGameObjectWithTag("Balls").GetComponent<BallController>().Respawn(true);
+            BrickFactory.GetInstance().generateBricks();
         }
     }
 
