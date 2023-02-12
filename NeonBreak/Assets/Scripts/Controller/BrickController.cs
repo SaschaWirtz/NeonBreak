@@ -4,17 +4,10 @@ using UnityEngine;
 
 public class BrickController : MonoBehaviour
 {
-    /// <summary> 
+    /// <summary>
     /// Set brick type.
     /// </summary>
     public BrickType type = BrickType.Default;
-
-    /// <summary> 
-    /// Triggers score logic.
-    /// </summary>
-    void OnDestroy() {
-        ScoreManager.GetInstance().AddScore(10);
-    }
 
     /// <summary> 
     /// Destroys brick on impact and triggers powerup method.
@@ -29,8 +22,17 @@ public class BrickController : MonoBehaviour
             if (this.type != BrickType.Default) {
                 PowerupFactory.Instance.spawnPowerup(this.type, this.transform.position * 1);
             }
-            
-            Destroy(this.gameObject, 0.1f);
+
+            StartCoroutine(this.disableBrick());
         }
+    }
+
+    /// <summary> 
+    /// Coroutine for brick destroy delay.
+    /// </summary>
+    IEnumerator disableBrick() {
+        yield return new WaitForSeconds(0.1f);
+        this.gameObject.SetActive(false);
+        ScoreManager.GetInstance().AddScore(10);
     }
 }

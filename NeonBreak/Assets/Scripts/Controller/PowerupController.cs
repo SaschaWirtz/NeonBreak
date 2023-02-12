@@ -44,7 +44,7 @@ public class PowerupController : MonoBehaviour
         this.GetComponent<AudioSource>().Play();
 
         this.GetComponent<Collider2D>().enabled = false;
-        StartCoroutine(disablePowerup());
+        StartCoroutine(this.disablePowerup());
     }
 
     /// <summary> 

@@ -46,7 +46,7 @@ public class PowerupFactory : MonoBehaviour {
     }
 
     /// <summary> 
-    /// Initialize factory by making static.
+    /// Reset powerup pool.
     /// </summary>
     /// <param name="scene"> 
     /// Scene that got loaded.
