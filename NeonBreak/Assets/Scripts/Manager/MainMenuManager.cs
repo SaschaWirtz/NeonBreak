@@ -11,12 +11,6 @@ public class MainMenuManager : MonoBehaviour
     public GameObject multiplayerButton;
     public GameObject exitButton;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        StartCoroutine(enableButtons());
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -30,13 +24,6 @@ public class MainMenuManager : MonoBehaviour
             }
         }
 
-    }
-
-    IEnumerator enableButtons() {
-        yield return new WaitForSeconds(9.0f);
-        singleplayerButton.GetComponent<Button>().interactable = true;
-        multiplayerButton.GetComponent<Button>().interactable = true;
-        exitButton.GetComponent<Button>().interactable = true;
     }
 
     public void singleplayerMode() {
