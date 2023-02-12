@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PowerupFactory : MonoBehaviour {
 
@@ -39,6 +40,23 @@ public class PowerupFactory : MonoBehaviour {
             DontDestroyOnLoad(gameObject);
 
             Instance = this;
+
+            SceneManager.sceneLoaded += this.OnSceneLoaded;
+        }
+    }
+
+    /// <summary> 
+    /// Initialize factory by making static.
+    /// </summary>
+    /// <param name="scene"> 
+    /// Scene that got loaded.
+    /// </param>
+    /// <param name="mode"> 
+    /// LoadSceneMode for this loading process.
+    /// </param>
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        if(scene.name == "Main") {
+            this.powerupPool = new List<GameObject>();
         }
     }
 
