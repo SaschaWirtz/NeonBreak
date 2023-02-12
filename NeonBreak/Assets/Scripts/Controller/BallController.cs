@@ -40,6 +40,12 @@ public class BallController : MonoBehaviour
     private int unstuckMethod = 0;
 
     /// <summary> 
+    /// Determines how much the direction of the ball changes on paddel collision.
+    /// </summary>
+    [SerializeField]
+    private float ballVelocityModifier = 10;
+
+    /// <summary> 
     /// Getting reference for rigid body.
     /// </summary>
     void Awake() {
@@ -73,6 +79,20 @@ public class BallController : MonoBehaviour
             lowerEdge.respawn -= this.RespawnTrigger;
         }
         
+    }
+
+    /// <summary> 
+    /// Modifies ball velocity dependat on collision.
+    /// </summary>
+    /// <param name="collision"> 
+    /// Colliding gameobject.
+    /// </param>
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if(collision.gameObject.tag == "Player") {
+            float ballModifier = (this.transform.position.x - collision.transform.position.x) / collision.collider.bounds.size.x * this.ballVelocityModifier;
+            this.rigidBody.velocity += (new Vector2(ballModifier, 0f));
+            this.rigidBody.velocity = this.rigidBody.velocity.normalized * this.speed;
+        }
     }
 
     /// <summary> 
