@@ -14,19 +14,11 @@ public class MainMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        using (AndroidJavaClass btDiscoveryAgent = new AndroidJavaClass("de.MGD.NeonBreak.transports.bluetoothTransport.BTDiscoveryAgent")) {
-            AndroidJavaObject companion = btDiscoveryAgent.GetStatic<AndroidJavaObject>("Companion");
-            Debug.Log("Name: " + companion.Call<int>("getSize"));
-            for (int i = 0; i < companion.Call<int>("getSize"); i++)
-            {
-                Debug.Log("Name: " + companion.Call<string>("getNameById", i));
-                Debug.Log("MAC: " + companion.Call<string>("getMacById", i));
-            }
-        }
-
     }
 
     public void singleplayerMode() {
+        SoundManager.GetInstance().StopMainMenuSoundtrack();
+        SoundManager.GetInstance().StartButtonClickSFX();
         StartCoroutine(singleplayer());
     }
 
@@ -37,6 +29,7 @@ public class MainMenuManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         singleplayerButton.SetActive(false);
         yield return new WaitForSeconds(0.1f);
+        SoundManager.GetInstance().StartSinglePlayerSoundtrack();
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
     }
 
@@ -84,7 +77,10 @@ public class MainMenuManager : MonoBehaviour
         using (AndroidJavaObject btPermissionManager = new AndroidJavaObject("de.MGD.NeonBreak.transports.bluetoothTransport.BTPermissionManager")) {
             using (AndroidJavaClass javaUnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
                 using (AndroidJavaObject currentActivity = javaUnityPlayer.GetStatic<AndroidJavaObject>("currentActivity")) {
-                    if (btPermissionManager.Call<bool>("IsPermissionRequired", currentActivity) && !Permission.HasUserAuthorizedPermission("android.permission.BLUETOOTH_CONNECT")) {
+                    if (btPermissionManager.Call<bool>("IsPermissionRequired", currentActivity) 
+                        && (!Permission.HasUserAuthorizedPermission("android.permission.BLUETOOTH_CONNECT")
+                        || !Permission.HasUserAuthorizedPermission("android.permission.BLUETOOTH_SCAN")
+                        || !Permission.HasUserAuthorizedPermission("android.permission.ACCESS_FINE_LOCATION"))) {
                         var callbacks = new PermissionCallbacks();
                         callbacks.PermissionDenied += (string permissionName) => {
                             if (permissionName == "android.permission.BLUETOOTH_CONNECT") {
@@ -94,11 +90,15 @@ public class MainMenuManager : MonoBehaviour
 
                         callbacks.PermissionGranted += (string permissionName) => {
                             if (permissionName == "android.permission.BLUETOOTH_CONNECT") {
+                                Permission.RequestUserPermission("android.permission.BLUETOOTH_SCAN", callbacks);
+                            } else if (permissionName == "android.permission.ACCESS_FINE_LOCATION") {
                                 if (this.activateBluetooth()) {
                                     this.discoverDevices();
                                 } else {
                                     //Error
                                 }
+                            } else if (permissionName == "android.permission.BLUETOOTH_SCAN") {
+                                Permission.RequestUserPermission("android.permission.ACCESS_FINE_LOCATION", callbacks);
                             }
                         };
 
@@ -121,6 +121,10 @@ public class MainMenuManager : MonoBehaviour
                 using (AndroidJavaObject currentActivity = javaUnityPlayer.GetStatic<AndroidJavaObject>("currentActivity")) {
                     btDiscoveryAgent.Call("registerReceiver", currentActivity);
                     btDiscoveryAgent.Call("startDiscovery");
+                    while (btDiscoveryAgent.Call<string>("getMacForDeviceName", "HUAWEI P20 lite") == null) {
+                        Debug.Log(btDiscoveryAgent.Call<string>("getMacForDeviceName", "HUAWEI P20 lite"));    
+                    }
+                    Debug.Log(btDiscoveryAgent.Call<string>("getMacForDeviceName", "HUAWEI P20 lite"));
                 }
             }
         }

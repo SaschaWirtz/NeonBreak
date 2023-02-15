@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.os.Process;
+import de.MGD.NeonBreak.transports.bluetoothTransport.BTDiscoverStateManager;
 
 public class UnityPlayerActivity extends AppCompatActivity implements IUnityPlayerLifecycleEvents
 {
@@ -68,6 +69,8 @@ public class UnityPlayerActivity extends AppCompatActivity implements IUnityPlay
     // Quit Unity
     @Override protected void onDestroy ()
     {
+        (new BTDiscoverStateManager()).stopDiscoverableMode();
+
         mUnityPlayer.destroy();
         super.onDestroy();
     }

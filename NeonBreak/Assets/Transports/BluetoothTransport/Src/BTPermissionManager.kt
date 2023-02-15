@@ -8,30 +8,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.content.pm.PackageManager;
 
+/**
+ * BTPermissionManager
+ *
+ * Class with useful functions regarding the permissions
+ * management.
+ */
 public class BTPermissionManager {
-    public fun RegisterPermissionListener(activity: AppCompatActivity) {
-        val requestPermissionLauncher = activity.registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean -> 
-            if (isGranted) {
-                BTStateManager().TurnOnBluetooth();
-            }
-        }
-    }
-
-    public fun RequestBluetoothPermissionIfRequired(activity: AppCompatActivity) {
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.BLUETOOTH_CONNECT), 2);
-                return;
-            }
-        }
-    }
-
+    /**
+     * Checking if permission request would be required due to
+     * backwards compatibility with older android devices.
+     */
     public fun IsPermissionRequired(activity: AppCompatActivity): Boolean {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                // ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.BLUETOOTH_CONNECT), 2);
                 return true;
             }
         }

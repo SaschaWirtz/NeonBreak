@@ -17,7 +17,7 @@ public class BrickController : MonoBehaviour
     /// </param>
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Balls") {
-            this.GetComponent<AudioSource>().Play();
+            SoundManager.GetInstance().StartBrickHitSFX();
 
             if (this.type != BrickType.Default) {
                 PowerupFactory.Instance.spawnPowerup(this.type, this.transform.position * 1);

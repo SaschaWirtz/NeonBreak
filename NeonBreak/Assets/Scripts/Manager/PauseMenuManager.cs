@@ -29,6 +29,7 @@ public class PauseMenuManager : MonoBehaviour
     }
 
     public void resumeGame() {
+        SoundManager.GetInstance().StartButtonClickSFX();
         StartCoroutine(resume());
     }
 
@@ -44,6 +45,8 @@ public class PauseMenuManager : MonoBehaviour
     }
 
     public void toMainMenu() {
+        SoundManager.GetInstance().StopSinglePlayerSoundtrack();
+        SoundManager.GetInstance().StartButtonClickSFX();
         StartCoroutine(mainMenu());
     }
 
