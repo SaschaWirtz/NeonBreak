@@ -44,5 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0ad1ed2431f094dbc61189220ecb68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Brick: {fileID: 8785926600860628647, guid: 2c6d9ecafdfb1ac5aaa8c620e9861ab7, type: 3}
-  EnlargedPadelBrick: {fileID: 4794973534403904472, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+  brickPrefabs:
+  - {fileID: 8785926600860628647, guid: 2c6d9ecafdfb1ac5aaa8c620e9861ab7, type: 3}
+  - {fileID: 4794973534403904472, guid: 40e5f839079393efeb6e5c5a67e65985, type: 3}
+  maxPoolSize: 20
+  maxPowerupPoolSize: 10

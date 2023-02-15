@@ -12,14 +12,10 @@ public class BrickFactory : MonoBehaviour {
     public static BrickFactory Instance;
 
     /// <summary> 
-    /// Prefab reference of normal brick
+    /// List of brick prefabs
     /// </summary>
-    public GameObject Brick;
-
-    /// <summary> 
-    /// Prefab reference of enlarged padel brick
-    /// </summary>
-    public GameObject EnlargedPadelBrick;
+    [SerializeField]
+    private List<GameObject> brickPrefabs;
 
     /// <summary> 
     /// Number of columns in brick cluster
@@ -55,13 +51,18 @@ public class BrickFactory : MonoBehaviour {
     /// Maximal amount of normal bricks that can be pooled
     /// </summary>
     [SerializeField]
-    private int maxNormalPoolSize = 20;
+    private int maxPoolSize = 20;
 
     /// <summary> 
-    /// Maximal amount of enlarged bricks that can be pooled
+    /// Maximal amount of each powerup bricks that can be pooled
     /// </summary>
     [SerializeField]
-    private int maxEnlargedPoolSize = 10;
+    private int maxPowerupPoolSize = 10;
+
+    /// <summary> 
+    /// Dictionary of brick pools
+    /// </summary>
+    private Dictionary<int, Stack<GameObject>> brickPools;
 
     /// <summary> 
     /// Object normal brick pool.
@@ -112,8 +113,7 @@ public class BrickFactory : MonoBehaviour {
     /// Generating bricks.
     /// </summary>
     private void Start() {
-        this.normalBrickPool = new Stack<GameObject>();
-        this.enlargedBrickPool = new Stack<GameObject>();
+        this.InitializePools();
         this.generateBricks();
     }
 
@@ -128,8 +128,17 @@ public class BrickFactory : MonoBehaviour {
     /// </param>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         if(scene.name == "Main") {
-            this.normalBrickPool = new Stack<GameObject>();
-            this.enlargedBrickPool = new Stack<GameObject>();
+            this.InitializePools();
+        }
+    }
+
+    /// <summary> 
+    /// Initializing brick pools.
+    /// </summary>
+    private void InitializePools() {
+        this.brickPools = new Dictionary<int, Stack<GameObject>>();
+        foreach(int types in Enum.GetValues(typeof(BrickType))) {
+            this.brickPools.Add(types, new Stack<GameObject>());
         }
     }
 
@@ -148,9 +157,9 @@ public class BrickFactory : MonoBehaviour {
                     GameObject brickObject;
                     int powerupRandomInt = new System.Random().Next(1, 5);
                     if(powerupRandomInt < 2) {
-                        brickObject = this.GetEnlargedBrick();
+                        brickObject = this.GetBrick(BrickType.EnlargePadel);
                     }else {
-                        brickObject = this.GetNormalBrick();
+                        brickObject = this.GetBrick(BrickType.Default);
                     }
                     if(brickObject != null) {
                         brickObject.transform.position = new Vector3(xPos, yPos);
@@ -162,34 +171,24 @@ public class BrickFactory : MonoBehaviour {
     }
 
     /// <summary> 
-    /// Getting active normal brick from pool.
+    /// Getting active brick from pool.
     /// </summary>
     /// <returns> 
-    /// Normal brick gameobject.
+    /// Brick gameobject.
     /// </returns>
-    private GameObject GetNormalBrick() {
-        if(this.normalBrickPool.Count > 0) {
-            GameObject normalBrick = this.normalBrickPool.Pop();
-            normalBrick.gameObject.SetActive(true);
-            return  normalBrick;
-        }else {
-            return Instantiate(this.Brick);
-        }
-    }
+    private GameObject GetBrick(BrickType type) {
 
-    /// <summary> 
-    /// Getting active enlarged brick from pool.
-    /// </summary>
-    /// <returns> 
-    /// Enlarged brick gameobject.
-    /// </returns>
-    private GameObject GetEnlargedBrick() {
-        if(this.enlargedBrickPool.Count > 0) {
-            GameObject enlargedBrick = this.enlargedBrickPool.Pop();
-            enlargedBrick.gameObject.SetActive(true);
-            return enlargedBrick;
+        if(this.brickPools[(int) type].Count > 0) {
+            GameObject brick = this.brickPools[(int) type].Pop();
+            brick.gameObject.SetActive(true);
+            return  brick;
         }else {
-            return Instantiate(this.EnlargedPadelBrick);
+            foreach(GameObject prefab in this.brickPrefabs) {
+                if(prefab.GetComponent<BrickController>().type == type) {
+                    return Instantiate(prefab);
+                }
+            }
+            return null;
         }
     }
 
@@ -201,19 +200,14 @@ public class BrickFactory : MonoBehaviour {
     /// </param>
     public void ReturnBrick(GameObject brick) {
         brick.gameObject.SetActive(false);
-        switch(brick.GetComponent<BrickController>().type) {
-            case BrickType.Default:
-                if(this.normalBrickPool.Count < this.maxNormalPoolSize) {
-                    this.normalBrickPool.Push(brick);
-                }
-                break;
-            case BrickType.EnlargePadel:
-            if(this.enlargedBrickPool.Count < this.maxEnlargedPoolSize) {
-                this.enlargedBrickPool.Push(brick);
-            }
-                break;
-            default:
-                break;
+
+        BrickType brickType = brick.GetComponent<BrickController>().type;
+        int size = brickType == BrickType.Default ? this.maxPoolSize : this.maxPowerupPoolSize;
+
+        if(this.brickPools[(int) brickType].Count < size) {
+            this.brickPools[(int) brickType].Push(brick);
+        }else {
+            Destroy(brick);
         }
     }
 }
