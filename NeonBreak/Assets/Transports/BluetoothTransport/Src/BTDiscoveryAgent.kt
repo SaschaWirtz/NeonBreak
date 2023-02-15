@@ -82,7 +82,7 @@ class BTDiscoveryAgent() {
      * @param name The name to search the MAC for
      * @return The device object or null
      */
-    fun getDeviceByName(name: String): BluetoothDevice? {
+    fun getDeviceByName(name: String): String? {
         val deviceWithName = this.discoveredDevices.filter {it.getName() == name};
 
         if (deviceWithName.size < 1) {
