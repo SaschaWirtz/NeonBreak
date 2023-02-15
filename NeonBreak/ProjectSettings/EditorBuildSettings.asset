@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 3fc8acdd13e6c734bafef6554d6fdbcd
+  - enabled: 1
+    path: Assets/Scenes/Scoreboard.unity
+    guid: 30abacbe696194f45b9cb1ebbbdb7a19
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 742ccb16ef4e21d43894bf36f5fdb2e9, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: b702ba3c37d4c900291d1f7f8c6a6b57, type: 2}

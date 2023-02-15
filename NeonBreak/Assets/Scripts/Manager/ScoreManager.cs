@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour {
 
@@ -22,11 +23,6 @@ public class ScoreManager : MonoBehaviour {
     public TextMeshProUGUI lifesText;
 
     /// <summary> 
-    /// TMPGUI component for final message control.
-    /// </summary>
-    public TextMeshProUGUI finalText;
-
-    /// <summary> 
     /// Lifes counter.
     /// </summary>
     private int lifes = 3;
@@ -35,6 +31,19 @@ public class ScoreManager : MonoBehaviour {
     /// Score counter.
     /// </summary>
     private int score = 0;
+
+    /// <summary> 
+    /// Setting instance.
+    /// </summary>
+    private void Awake() {
+        if(Instance == null)
+        {
+
+            DontDestroyOnLoad(gameObject);
+
+            Instance = this;
+        }
+    }
 
     /// <summary> 
     /// Getter for static gameobject instance.
@@ -47,24 +56,13 @@ public class ScoreManager : MonoBehaviour {
     }
 
     /// <summary> 
-    /// Setting instance.
-    /// </summary>
-    private void Awake() {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-    }
-
-    /// <summary> 
-    /// Subtract one life and check game over
+    /// Subtract one life and check game over.
     /// </summary>
     public void LoseLife() {
         this.lifes -= 1;
         this.lifesText.text = lifes.ToString();
 
         if(this.lifes < 1) {
-            this.finalText.text = "Game Over";
             this.gameOver();
         }
     }
@@ -100,10 +98,22 @@ public class ScoreManager : MonoBehaviour {
     /// Display game over screen.
     /// </summary>
     private void gameOver() {
-        this.finalText.enabled = true;
         GameObject[] balls = GameObject.FindGameObjectsWithTag("Balls");
         foreach (GameObject ball in balls) {
             Destroy(ball);
         }
+        SoundManager.GetInstance().StopSinglePlayerSoundtrack();
+        SoundManager.GetInstance().StartMainMenuSoundtrack();
+        SceneManager.LoadScene("Scoreboard", LoadSceneMode.Single);
+    }
+
+    /// <summary> 
+    /// Getter for score.
+    /// </summary>
+    /// <returns> 
+    /// Returns current score.
+    /// </returns>
+    public int getScore() {
+        return this.score;
     }
 }
