@@ -23,16 +23,8 @@ public class BrickController : MonoBehaviour
                 PowerupFactory.Instance.spawnPowerup(this.type, this.transform.position * 1);
             }
 
-            StartCoroutine(this.disableBrick());
+            BrickFactory.GetInstance().ReturnBrick(this.gameObject);
+            ScoreManager.GetInstance().AddScore(10);
         }
-    }
-
-    /// <summary> 
-    /// Coroutine for brick destroy delay.
-    /// </summary>
-    IEnumerator disableBrick() {
-        yield return new WaitForSeconds(0.1f);
-        this.gameObject.SetActive(false);
-        ScoreManager.GetInstance().AddScore(10);
     }
 }

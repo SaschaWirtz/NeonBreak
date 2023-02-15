@@ -17,9 +17,15 @@ public class PowerupFactory : MonoBehaviour {
     public GameObject EnlargePadel;
 
     /// <summary> 
+    /// Maximal amount of enlarged powerups that can be pooled
+    /// </summary>
+    [SerializeField]
+    private int maxEnlargePoolSize = 10;
+
+    /// <summary> 
     /// Object powerup pool.
     /// </summary>
-    private List<GameObject> powerupPool;
+    private Stack<GameObject> enlargePowerupPool;
 
     /// <summary> 
     /// Getter for static gameobject instance.
@@ -56,7 +62,7 @@ public class PowerupFactory : MonoBehaviour {
     /// </param>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         if(scene.name == "Main") {
-            this.powerupPool = new List<GameObject>();
+            this.enlargePowerupPool = new Stack<GameObject>();
         }
     }
 
@@ -64,40 +70,44 @@ public class PowerupFactory : MonoBehaviour {
     /// Initialize powerup object pool.
     /// </summary>
     private void Start() {
-        this.powerupPool = new List<GameObject>();
+        this.enlargePowerupPool = new Stack<GameObject>();
     }
 
     /// <summary> 
-    /// Returns a unused powerup gameobject from objectpool.
+    /// Getting active enlarge powerup from pool.
     /// </summary>
-    /// <param name="type"> 
-    /// Powerup type determined by brick type.
-    /// </param>
     /// <returns> 
-    /// Unused powerup gameobject from objectpool.
+    /// Enlarge powerup gameobject.
     /// </returns>
-    private GameObject GetActivePooledPowerup(BrickType type) {        
-
-        // Iterate through objectpool and search for unused powerup gameobject.
-        for(int pooledPowerup = 0; pooledPowerup < this.powerupPool.Count; pooledPowerup++) {
-            if(!this.powerupPool[pooledPowerup].activeInHierarchy && this.powerupPool[pooledPowerup].tag == Enum.GetName(typeof(BrickType), type)) {
-                this.powerupPool[pooledPowerup].SetActive(true);
-                return this.powerupPool[pooledPowerup];
-            }
+    private GameObject GetEnlargePowerup() {
+        if(this.enlargePowerupPool.Count > 0) {
+            GameObject enlargePowerup = this.enlargePowerupPool.Pop();
+            enlargePowerup.gameObject.SetActive(true);
+            return enlargePowerup;
+        }else {
+            return Instantiate(this.EnlargePadel);
         }
+    }
 
-        // Get correct prefab reference by reflection with bricktype name
-        GameObject toInstantiate = this.GetType().GetField(Enum.GetName(typeof(BrickType), type)).GetValue(this) as GameObject;
-
-        if (toInstantiate != null) {
-
-            // Create new powerup gameobject if no unused is available.
-            GameObject newPowerup = Instantiate(toInstantiate);
-            this.powerupPool.Add(newPowerup);
-            return newPowerup;
+    /// <summary> 
+    /// Returns powerup back to pool if pool isn't full.
+    /// </summary>
+    /// <param name="powerup"> 
+    /// Powerup that is been returned to the pool.
+    /// </param>
+    public void ReturnPowerup(GameObject powerup) {
+        powerup.gameObject.SetActive(false);
+        switch(powerup.gameObject.tag) {
+            case "EnlargePadel":
+                if(this.enlargePowerupPool.Count < this.maxEnlargePoolSize) {
+                    this.enlargePowerupPool.Push(powerup);
+                }else {
+                    Destroy(powerup);
+                }
+                break;
+            default:
+                break;
         }
-
-        return null;
     }
 
     /// <summary> 
@@ -111,7 +121,7 @@ public class PowerupFactory : MonoBehaviour {
     /// </param>
     public void spawnPowerup(BrickType type, Vector3 position) {
 
-        GameObject newObject = this.GetActivePooledPowerup(type);
+        GameObject newObject = this.GetEnlargePowerup();
         if(newObject != null) {
             newObject.transform.position = position;
         }

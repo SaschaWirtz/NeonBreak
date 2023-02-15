@@ -43,6 +43,6 @@ public class PowerupController : MonoBehaviour
     public void DestroyPowerup() {
         SoundManager.GetInstance().StartPowerupSFX();
 
-        this.gameObject.SetActive(false);
+        PowerupFactory.GetInstance().ReturnPowerup(this.gameObject);
     }
 }
